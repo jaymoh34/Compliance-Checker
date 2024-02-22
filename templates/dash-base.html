@@ -1,0 +1,272 @@
+{% load static %}
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>{% block title %}{% endblock title %}</title>
+	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+	<link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}">
+	<link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+	<!-- datatables -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.7.0/css/colReorder.dataTables.min.css">
+	<script src="https://cdn.datatables.net/colreorder/1.7.0/js/dataTables.colReorder.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<style>
+		.side-nav-divider {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			height: 1px;
+			border-width: 0;
+			color: rgb(255, 255, 255);
+			background-color: rgb(240, 236, 236)
+		}
+	</style>
+	{% block custom_css %}
+
+	{% endblock custom_css %}
+
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+			<div class="container-fluid d-flex flex-column p-0">
+				<a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+					href="{% url 'home' %}">
+					<div class="sidebar-brand-icon rotate-n-15">
+						<img src="{% static 'images/favicon.png' %}" alt="" height="40px">
+					</div>
+					<div class="sidebar-brand-text mx-3"><span>Compliance <br>Checker</span></div>
+				</a>
+				<hr class="sidebar-divider my-0">
+				<ul class="navbar-nav text-light" id="accordionSidebar">
+					<hr class="side-nav-divider">
+					<li class="nav-item">
+						<a class="nav-link text-center {% if section == 'dashboard' %}active{% endif %}"
+							href="{% url 'dashboard' %}">
+							<i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+						</a>
+					</li>
+
+					<div class="" style="display: flex; align-items: center;">
+						<hr style="flex-grow: 1; border: none; border-top: 5px solid white;">
+						<span class="nav-text" style="margin: 0 10px;">Compliance Check</span>
+						<hr style="flex-grow: 1; border: none; border-top: 5px solid white;">
+					</div>
+
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'pci_dss_compliance' %}active{% endif %}"
+							href="{% url 'pci_dss_compliance' %}">
+							<i class="far fa-check-square"></i><span>PCI DSS Compliance</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'hipaa_compliance' %}active{% endif %}"
+							href="{% url 'hipaa_compliance' %}">
+							<i class="far fa-check-square"></i><span>HIPAA Compliance</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'iso27k_compliance' %}active{% endif %}"
+							href="{% url 'iso27k_compliance' %}">
+							<i class="far fa-check-square"></i><span>ISO 27001 Compliance</span>
+						</a>
+					</li>
+
+					<div class="" style="display: flex; align-items: center;">
+						<hr style="flex-grow: 1; border: none; border-top: 5px solid white;">
+						<span class="nav-text" style="margin: 0 10px;">Compliance Reports</span>
+						<hr style="flex-grow: 1; border: none; border-top: 5px solid white;">
+					</div>
+
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'pci_dss_report' %}active{% endif %}"
+							href="{% url 'pci_dss_report' %}">
+							<i class="fas fa-book"></i><span>PCI DSS Report</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'hipaa_report' %}active{% endif %}" href="{% url 'hipaa_report' %}">
+							<i class="fas fa-book"></i><span>HIPAA Report</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if section == 'iso27k_report' %}active{% endif %}" href="{% url 'iso27k_report' %}">
+							<i class="fas fa-book"></i><span>ISO 27001 Report</span>
+						</a>
+					</li>
+				</ul>
+				<div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
+						id="sidebarToggle" type="button"></button></div>
+			</div>
+		</nav>
+		<div class="d-flex flex-column" id="content-wrapper">
+			<div id="content">
+				<nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+					<div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
+							id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+						<form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
+							<div class="input-group"><input class="bg-light form-control border-0 small" type="text"
+									placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i
+										class="fas fa-search"></i></button></div>
+						</form>
+						<ul class="navbar-nav flex-nowrap ms-auto">
+							<li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link"
+									aria-expanded="false" data-bs-toggle="dropdown" href="#"><i
+										class="fas fa-search"></i></a>
+								<div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in"
+									aria-labelledby="searchDropdown">
+									<form class="me-auto navbar-search w-100">
+										<div class="input-group"><input class="bg-light form-control border-0 small"
+												type="text" placeholder="Search for ...">
+											<div class="input-group-append"><button class="btn btn-primary py-0"
+													type="button"><i class="fas fa-search"></i></button></div>
+										</div>
+									</form>
+								</div>
+							</li>
+							<div class="d-none d-sm-block topbar-divider"></div>
+							<li class="nav-item dropdown no-arrow">
+								<div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+										aria-expanded="false" data-bs-toggle="dropdown" href="#">
+										<span class="d-none d-lg-inline me-2 text-gray-600 small">
+											{{ user.business_name }}
+										</span>
+										<img class="border rounded-circle img-profile"
+											src="{% static 'images/account-icon.png' %}"></a>
+									<div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+										<a class="dropdown-item" href="{% url 'profile' %}">
+											<i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile
+										</a>
+										<div class="dropdown-divider"></div>
+										<button class="dropdown-item" onclick="logMeOut()">
+											<i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+											&nbsp;Logout
+										</button>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</nav>
+
+				{% if messages %}
+				{% for message in messages %}
+				{% if message.tags == 'success' %}
+				<script>
+					var message = "{{ message|safe }}";
+					var alertType = "success";
+					console.log(message);
+
+					Swal.fire({
+						title: "Success!",
+						html: message,
+						icon: "success"
+					});
+				</script>
+				{% elif message.tags == 'info' %}
+				<script>
+					var message = "{{ message|safe }}";
+					var alertType = "info";
+					console.log(message);
+
+					Swal.fire({
+						title: "info!",
+						html: message,
+						icon: "info"
+					});
+
+				</script>
+
+				{% elif message.tags == 'warning' %}
+				<script>
+					var message = "{{ message|safe }}";
+					var alertType = "warning";
+					console.log(message);
+
+					Swal.fire({
+						title: "Warning!",
+						html: message,
+						icon: "warning"
+					});
+				</script>
+
+				{% elif message.tags == 'error' %}
+				<script>
+					var message = "{{ message|safe }}";
+					var alertType = "error";
+					console.log(message);
+
+					Swal.fire({
+						title: "Error!",
+						html: message,
+						icon: "error"
+					});
+				</script>
+
+				{% endif %}
+				{% endfor %}
+				{% endif %}
+
+				{% block header %}
+
+				{% endblock header %}
+
+				{% block content %}
+
+				{% endblock content %}
+
+			</div>
+			<footer class="bg-white sticky-footer">
+				<div class="container my-auto">
+					<div class="text-center my-auto copyright"><span>Copyright © Brand 2024</span></div>
+				</div>
+			</footer>
+		</div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+	<script src="{% static 'assets/js/script.min.js' %}"></script>
+	<script>
+		function logMeOut() {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You are about to logout",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, logout'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = "{% url 'logout_business' %}";
+				}
+			})
+		}
+	</script>
+	{% block custom_js %}
+
+	{% endblock custom_js %}
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+{% extends "dash-base.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header %}
+<div class="container py-4">
+    <p class="text-center text-dark display-3">Dashboard</p>
+</div>
+{% endblock header%}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="text-primary fw-bold m-0">Frameworks</h6>
+                </div>
+                <div class="card-body">
+                    <p class="fw-bold mt-2">
+                        PCI DSS Compliance
+                        <span class="float-end">{{user.get_pci_compliance_percentage|floatformat:0 }}% Compliance</span>
+                    </p>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-primary" aria-valuenow="{{user.get_pci_compliance_percentage}}"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style="width: {{user.get_pci_compliance_percentage}}%;">
+                            <span class="visually-hidden">{{user.get_pci_compliance_percentage}}%</span>
+                        </div>
+                    </div>
+                    <p class="fw-bold mt-2">
+                        HIPAA Compliance
+                        <span class="float-end">
+                            {{user.get_hipaa_compliance_percentage|floatformat:0 }}% Compliance</span>
+                    </p>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-primary" aria-valuenow="{{user.get_hipaa_compliance_percentage}}"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style="width: {{user.get_hipaa_compliance_percentage}}%;">
+                            <span class="visually-hidden">{{user.get_hipaa_compliance_percentage}}%</span>
+                        </div>
+                    </div>
+                    <p class="fw-bold mt-2">
+                        ISO 27001 Compliance
+                        <span class="float-end">
+                            {{user.get_iso27k_compliance_percentage|floatformat:0 }}% Compliance</span>
+                        </span>
+                    </p>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-primary" aria-valuenow="{{user.get_iso27k_compliance_percentage}}"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style="width: {{user.get_iso27k_compliance_percentage}}%;">
+                            <span class="visually-hidden">{{user.get_iso27k_compliance_percentage}}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0">Overall Compliance</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas data-bss-chart='{
+                            "type": "doughnut",
+                            "data": {
+                                "labels": ["Complied", "Not Complied"],
+                                "datasets": [{
+                                    "label": "",
+                                    "backgroundColor": ["#008000", "#FF0000"],
+                                    "borderColor": ["#008000", "#FF0000"],
+                                    "data": [{{total_compliance_percentage}}, {{total_non_compliance_percentage}}]
+                                }]
+                            },
+                            "options": {
+                                "maintainAspectRatio": false,
+                                "legend": {
+                                    "display": false,
+                                    "labels": {
+                                        "fontStyle": "normal"
+                                    }
+                                },
+                                "title": {
+                                    "fontStyle": "normal"
+                                }
+                            }
+                        }'>
+                        </canvas>
+                    </div>
+                    <div class="text-center small mt-4">
+                        <span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Complied</span>
+                        <span class="me-2"><i class="fas fa-circle text-danger"></i>&nbsp;Not Complied</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
